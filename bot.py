@@ -2,14 +2,24 @@
 import os
 import constant
 import random
+import requests
+import json
+import re
 import discord
+import sys
+
 from dotenv import load_dotenv
 from discord.ext import commands
+
+
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.select import Select
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
-
+blacklist_user = 'Cesar#3519'
 """
 Bot implementation
 """
@@ -20,11 +30,17 @@ async def ping_pong(ctx):
     await ctx.send("pong")
 
 @bot.command(name="addcard", help="Adds specific card to user preference")
-async def add_card_pref(ctx, card_name):
-    await ctx.send(f"Added card {card_name} to your preferences")
+async def add_card_pref(ctx, card_name=None):
+    if ctx.author == blacklist_user:
+        ctx.send("stfu lmao")
+    if card_name:
+        await ctx.send(f"Added card {card_name} to your preferences")
+    await ctx.send(f"{ctx.author.mention}, you didn't specify a card")
 
 @bot.command(name="helpme", help="Lists all commands and their intended use.")
 async def help_command(ctx, command=None):
+    if ctx.author == blacklist_user:
+        ctx.send("stfu lmao")
     if not command:
         await ctx.send(constant.addcard_help_message)
 
